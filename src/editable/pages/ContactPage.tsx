@@ -14,29 +14,41 @@ const desks = [
 export default function ContactPage() {
   return (
     <EditableSiteShell>
-      <main className="bg-[#f7f4ef] text-[#111]">
-        <section className="border-b border-black bg-white">
-          <div className="mx-auto max-w-[var(--editable-container)] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
-            <p className="text-xs font-black uppercase tracking-[0.28em] text-[#c92f2f]">{pagesContent.contact.eyebrow}</p>
-            <h1 className="editorial-brand mt-4 max-w-5xl text-6xl font-black leading-[0.92] tracking-[-0.055em] sm:text-8xl">{pagesContent.contact.title}</h1>
-            <p className="mt-6 max-w-2xl border-l-4 border-[#c92f2f] pl-5 text-base font-semibold leading-8 text-black/65">{pagesContent.contact.description}</p>
+      <main className="bg-white text-[#26313f]">
+        <section className="pr-wave text-white">
+          <div className="pr-container flex min-h-[300px] items-center py-12">
+            <div className="max-w-2xl">
+              <p className="text-sm font-bold uppercase tracking-wide text-[#AACCD6]">{pagesContent.contact.eyebrow}</p>
+              <h1 className="mt-3 text-4xl font-extrabold leading-tight tracking-[-0.035em] sm:text-5xl">Contact</h1>
+              <p className="mt-5 max-w-xl text-base font-semibold leading-8 text-white/85">{pagesContent.contact.description}</p>
+            </div>
           </div>
         </section>
 
-        <section className="mx-auto grid max-w-[var(--editable-container)] border-x border-black bg-white lg:grid-cols-[0.72fr_1.28fr]">
-          <aside className="border-b border-black bg-[#171717] text-white lg:border-b-0 lg:border-r">
+        <section className="pr-container py-12 lg:py-14">
+          <div className="mx-auto grid max-w-5xl gap-8 lg:grid-cols-[310px_minmax(0,1fr)]">
+          <aside className="self-start border border-[#d7dce3] bg-[#f7f9fc] p-5">
+            <div className="pr-section-rule">
+              <h2 className="text-2xl font-extrabold text-[#26313f]">Contact Options</h2>
+            </div>
+            <div className="mt-5 grid gap-3">
             {desks.map((desk, index) => (
-              <div key={desk.title} className="border-b border-white/25 p-7 last:border-b-0 sm:p-9">
-                <div className="flex items-center justify-between"><desk.icon className="h-5 w-5 text-[#f34a43]" /><span className="text-xs font-black text-white/45">0{index + 1}</span></div>
-                <h2 className="editorial-serif mt-6 text-3xl font-black">{desk.title}</h2>
-                <p className="mt-3 text-sm leading-7 text-white/65">{desk.body}</p>
+              <div key={desk.title} className="border border-[#d7dce3] bg-white p-4">
+                <div className="flex items-center justify-between"><desk.icon className="h-5 w-5 text-[#12366f]" /><span className="text-xs font-extrabold text-[#8a94a3]">0{index + 1}</span></div>
+                <h3 className="mt-4 text-base font-extrabold text-[#26313f]">{desk.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#667085]">{desk.body}</p>
               </div>
             ))}
+            </div>
           </aside>
-          <div className="p-6 sm:p-10 lg:p-14">
-            <p className="text-xs font-black uppercase tracking-[0.22em] text-[#c92f2f]">Send a message</p>
-            <h2 className="editorial-serif mt-3 text-4xl font-black">{pagesContent.contact.formTitle}</h2>
+
+          <div className="border border-[#d7dce3] bg-white p-5 shadow-[0_2px_10px_rgba(16,24,40,.08)] sm:p-7">
+            <div className="border-b border-[#d7dce3] pb-5">
+              <p className="text-xs font-extrabold uppercase tracking-wide text-[#12366f]">Send a message</p>
+              <h2 className="mt-1 text-3xl font-extrabold tracking-[-0.035em] text-[#26313f]">{pagesContent.contact.formTitle}</h2>
+            </div>
             <EditableContactLeadForm />
+          </div>
           </div>
         </section>
       </main>

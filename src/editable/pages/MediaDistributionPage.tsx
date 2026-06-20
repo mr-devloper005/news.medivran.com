@@ -1,19 +1,12 @@
-import { EditableTaskArchiveRoute, taskMetadata } from '@/editable/pages/TaskArchivePage'
-import { mediaDistributionRoute } from '@/config/media-distribution-route'
+import { redirect } from 'next/navigation'
 
 export const revalidate = 3
-export const generateMetadata = () => taskMetadata('mediaDistribution', mediaDistributionRoute)
+export const generateMetadata = () => ({ title: 'Search' })
 
 export default async function MediaDistributionPage({
-  searchParams,
+  searchParams: _searchParams,
 }: {
   searchParams?: Promise<{ category?: string; page?: string }>
 }) {
-  return (
-    <EditableTaskArchiveRoute
-      task="mediaDistribution"
-      searchParams={searchParams}
-      basePath={mediaDistributionRoute}
-    />
-  )
+  redirect('/search')
 }

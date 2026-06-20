@@ -26,8 +26,8 @@ body {
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
-::-webkit-scrollbar-track { background: #ebe7e1; }
-::-webkit-scrollbar-thumb { background: #171717; border: 2px solid #ebe7e1; }
+::-webkit-scrollbar-track { background: #edf2f7; }
+::-webkit-scrollbar-thumb { background: #12366f; border: 2px solid #edf2f7; }
 ::-webkit-scrollbar-thumb:hover { background: var(--editorial-red); }
 
 .editorial-brand,
@@ -36,52 +36,109 @@ body {
 }
 
 .editorial-brand {
-  font-style: italic;
-  letter-spacing: -0.065em;
+  letter-spacing: 0;
+  text-transform: none;
+  text-shadow: none;
 }
 
 .editorial-rule { border-color: color-mix(in srgb, var(--editorial-ink) 22%, transparent); }
 
 .article-content {
-  color: #24211e;
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(1.05rem, 1vw + .75rem, 1.25rem);
-  line-height: 1.82;
+  color: #26313f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 17px;
+  line-height: 1.72;
 }
 
 .article-content > :first-child { margin-top: 0; }
-.article-content p { margin: 0 0 1.55em; }
-.article-content p:first-of-type::first-letter {
-  float: left;
-  margin: .08em .12em 0 0;
-  color: var(--editorial-red);
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-size: 4.7em;
-  font-weight: 900;
-  line-height: .72;
-}
+.article-content p { margin: 0 0 1.7em; }
 
 .article-content h2,
 .article-content h3,
 .article-content h4 {
-  margin: 1.8em 0 .65em;
-  color: #111;
-  font-family: ui-sans-serif, system-ui, sans-serif;
-  font-weight: 900;
-  letter-spacing: -.045em;
-  line-height: 1.05;
+  margin: 1.65em 0 .8em;
+  color: #26313f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: 800;
+  letter-spacing: 0;
+  line-height: 1.18;
 }
-.article-content h2 { font-size: clamp(1.8rem, 4vw, 3rem); }
-.article-content h3 { font-size: clamp(1.45rem, 3vw, 2.15rem); }
-.article-content a { color: var(--editorial-red); font-weight: 700; text-decoration: underline; text-decoration-thickness: 2px; text-underline-offset: 3px; }
-.article-content blockquote { margin: 2em 0; border-left: 7px solid var(--editorial-red); padding: .2em 0 .2em 1em; color: #111; font-size: 1.35em; font-weight: 700; line-height: 1.35; }
+.article-content h2 { font-size: clamp(1.9rem, 3vw, 2.05rem); }
+.article-content h3 { font-size: clamp(1.55rem, 2.5vw, 1.85rem); }
+.article-content a { color: #1396ff; font-weight: 500; text-decoration: none; }
+.article-content blockquote { margin: 2em 0; border-left: 5px solid var(--slot4-accent-fill); padding: .2em 0 .2em 1em; color: #111; font-size: 1.2em; font-weight: 700; line-height: 1.45; }
 .article-content ul, .article-content ol { margin: 1.3em 0; padding-left: 1.4em; }
 .article-content li { margin: .5em 0; }
 .article-content img { width: 100%; margin: 2em 0; }
 
 input, textarea, select, button { border-radius: 0 !important; }
 
+.wp-canvas {
+  max-width: none;
+  margin-inline: auto;
+  background: #fff;
+}
+
+.wp-sidebar-title {
+  color: #26313f;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.pr-container {
+  width: min(1140px, calc(100% - 32px));
+  margin-inline: auto;
+}
+
+.pr-section-title {
+  color: #26313f;
+  font-size: clamp(2rem, 3vw, 2.45rem);
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.pr-section-rule {
+  border-bottom: 5px solid #c9c9c9;
+  padding-bottom: .45rem;
+}
+
+.pr-card {
+  border: 1px solid #dfe3e8;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(16, 24, 40, .12);
+}
+
+.pr-link {
+  color: #002f6c;
+  font-weight: 600;
+}
+
+.pr-wave {
+  background:
+    radial-gradient(ellipse at 75% 110%, rgba(217,74,39,.95) 0 12%, transparent 13%),
+    repeating-radial-gradient(ellipse at 92% 10%, transparent 0 10px, rgba(176,73,137,.85) 12px 15px, transparent 17px 28px),
+    linear-gradient(120deg, #061d3e 0%, #082a59 55%, #071f45 100%);
+}
+
+.wp-widget-heading {
+  border-bottom: 1px solid #d7d7d7;
+  color: #000;
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.avatar-placeholder {
+  background:
+    radial-gradient(circle at 50% 36%, #fff 0 20%, transparent 21%),
+    radial-gradient(ellipse at 50% 92%, #fff 0 36%, transparent 37%),
+    #c7c7c7;
+}
+
 @media (max-width: 640px) {
-  .article-content { font-size: 1.05rem; line-height: 1.72; }
-  .article-content p:first-of-type::first-letter { font-size: 3.9em; }
+  .article-content { font-size: 16px; line-height: 1.68; }
+  .wp-sidebar-title { font-size: 26px; }
 }
