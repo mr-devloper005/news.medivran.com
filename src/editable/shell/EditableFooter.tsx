@@ -1,44 +1,62 @@
 'use client'
 
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 import { SITE_CONFIG } from '@/lib/site-config'
-import { globalContent } from '@/editable/content/global.content'
 import { useEditableLocalAuthSession } from '@/editable/components/EditableLocalAuthForms'
 
 export function EditableFooter() {
-  const year = new Date().getFullYear()
   const { session, logout } = useEditableLocalAuthSession()
+  const columns = [
+    {
+      title: 'Pages',
+      links: [
+        ['Home', '/'],
+        ['About', '/about'],
+        ['Contact', '/contact'],
+        ['Search', '/search'],
+      ],
+    },
+    {
+      title: 'Account',
+      links: session ? [['Create Post', '/create']] : [['Login', '/login'], ['Sign Up', '/signup']],
+    },
+  ]
 
   return (
-    <footer className="border-t-8 border-[var(--slot4-accent)] bg-black text-white">
-      <div className="mx-auto max-w-[1440px] px-4 py-14 sm:px-6 lg:px-10 lg:py-20">
-        <div className="grid gap-12 lg:grid-cols-[1.2fr_.7fr_.7fr]">
-          <div>
-            <Link href="/" className="editorial-brand text-5xl font-black text-[var(--slot4-accent)] sm:text-6xl">{SITE_CONFIG.name}</Link>
-            <p className="mt-6 max-w-xl text-sm leading-7 text-white/62">{globalContent.footer?.description || SITE_CONFIG.description}</p>
-            <form action="/signup" className="mt-8 flex max-w-xl border border-white/35">
-              <input name="email" type="email" placeholder="Email for newsroom updates" className="min-w-0 flex-1 bg-transparent px-4 py-4 text-sm outline-none placeholder:text-white/40" />
-              <button className="bg-[var(--slot4-accent)] px-5 text-xs font-black uppercase tracking-[.14em]">Subscribe</button>
-            </form>
-          </div>
-          <div>
-            <h3 className="border-b border-white/25 pb-3 text-[10px] font-black uppercase tracking-[.22em] text-white/55">Explore</h3>
-            <div className="mt-4 grid gap-3">
-              <Link href="/search" className="group inline-flex items-center justify-between text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Archive<ArrowRight className="h-4 w-4" /></Link>
-            </div>
-          </div>
-          <div>
-            <h3 className="border-b border-white/25 pb-3 text-[10px] font-black uppercase tracking-[.22em] text-white/55">Publication</h3>
-            <div className="mt-4 grid gap-3">
-              <Link href="/about" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">About</Link>
-              <Link href="/contact" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Contact</Link>
-              {session ? <><Link href="/create" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Publish</Link><button onClick={logout} className="text-left text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Logout</button></> : <><Link href="/login" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Log in</Link><Link href="/signup" className="text-sm font-black uppercase tracking-[.08em] hover:text-[var(--slot4-accent)]">Subscribe</Link></>}
-            </div>
-          </div>
+    <footer className="bg-[#12366f] text-white">
+      <section className="bg-[linear-gradient(100deg,#231066_0%,#4382DF_50%,#140045_100%)]">
+        <div className="pr-container py-10 text-center">
+          <p className="text-2xl uppercase tracking-wide">Receive updates from {SITE_CONFIG.name}</p>
+          <h2 className="mt-5 text-3xl font-extrabold uppercase">Straight to your inbox</h2>
+          <form action="/signup" className="mx-auto mt-7 grid max-w-3xl overflow-hidden rounded-full bg-white text-[#26313f] md:grid-cols-[1fr_auto]">
+            <input name="email" type="email" placeholder="Enter your email" className="min-h-[52px] min-w-0 px-8 text-xl font-bold outline-none" />
+            <button className="bg-[#d94a27] px-8 text-2xl font-extrabold text-white">SIGN UP</button>
+          </form>
         </div>
+      </section>
+
+      <div className="pr-container grid gap-8 py-8 md:grid-cols-2">
+        {columns.map((column) => (
+          <div key={column.title}>
+            <h3 className="text-xl font-bold">{column.title}</h3>
+            <div className="mt-7 grid gap-2 text-sm font-semibold">
+              {column.links.map(([label, href]) => <Link key={label} href={href} className="hover:text-[#AACCD6]">{label}</Link>)}
+              {column.title === 'Account' && session ? <button type="button" onClick={logout} className="text-left hover:text-[#AACCD6]">Logout</button> : null}
+            </div>
+          </div>
+        ))}
       </div>
-      <div className="border-t border-white/20 px-4 py-5 text-center text-[10px] font-black uppercase tracking-[.18em] text-white/45">© {year} {SITE_CONFIG.name}. Independent media and public information.</div>
+
+      <div className="pr-container flex flex-wrap items-center justify-between gap-4 border-t border-white/20 py-4 text-sm">
+        <div className="flex flex-wrap gap-4">
+          <Link href="/">Home</Link>
+          <Link href="/about">About</Link>
+          <Link href="/contact">Contact</Link>
+          <Link href="/search">Search</Link>
+          {session ? <Link href="/create">Create Post</Link> : <Link href="/login">Login</Link>}
+        </div>
+        <p>Copyright © 2026 {SITE_CONFIG.name}. All rights reserved.</p>
+      </div>
     </footer>
   )
 }

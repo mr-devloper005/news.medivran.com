@@ -133,37 +133,144 @@ function BackLink({ task }: { task: TaskKey }) {
 }
 
 function ArticleDetail({ task, post, related, comments }: { task: TaskKey; post: SitePost; related: SitePost[]; comments: Array<{ id: string; name: string; comment: string; createdAt: string }> }) {
-  const images = getImages(post)
   const published = post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : ''
+  const author = getField(post, ['author', 'authorName', 'name']) || SITE_CONFIG.name
+  const category = categoryOf(post, 'News in Focus')
+  const prev = related[0]
+  const next = related[1]
+  const picks = related.slice(0, 3)
+  const sidebarPosts = related.length ? related : [post]
+  const categories = Array.from(new Set(['News in Focus', 'Business & Money', 'Science & Tech', 'Lifestyle & Health', 'Policy & Public Interest', 'People & Culture', category])).filter(Boolean)
+  const image = getImages(post)[0]
+
   return (
-    <section className="bg-[#f7f4ef]">
-      <header className="border-b border-black/20">
-        <div className="mx-auto max-w-[1180px] px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+    <section className="bg-white">
+      <header className="bg-[#f7f9fc]">
+        <div className="pr-container py-12">
           <BackLink task={task} />
-          <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t-4 border-black pt-4 text-[11px] font-black uppercase tracking-[0.16em]">
-            <span className="text-[#c92f2f]">{categoryOf(post, 'News')}</span>
+          <p className="mt-8 text-sm font-bold uppercase text-[#12366f]">{category}</p>
+          <h1 className="mt-4 max-w-5xl text-4xl font-extrabold leading-tight tracking-[-0.035em] text-[#26313f] lg:text-5xl">{post.title}</h1>
+          {summaryText(post) ? <p className="mt-6 max-w-3xl text-xl leading-8 text-[#4b5563]">{summaryText(post)}</p> : null}
+          <div className="mt-6 flex flex-wrap items-center gap-4 text-sm text-[#667085]">
+            <span>Provided by {author}</span>
             {published ? <time>{published}</time> : null}
           </div>
-          <h1 className="editorial-serif mt-6 max-w-6xl text-5xl font-black leading-[0.94] tracking-[-0.055em] sm:text-6xl lg:text-[5.5rem]">{post.title}</h1>
-          {summaryText(post) ? <p className="mt-6 max-w-4xl text-xl font-bold leading-8 text-black/68 sm:text-2xl">{summaryText(post)}</p> : null}
         </div>
       </header>
 
-      {images[0] ? (
-        <figure className="mx-auto max-w-[1320px] border-x border-b border-black/15 bg-white">
-          <img src={images[0]} alt="" className="max-h-[760px] w-full object-cover" />
-          <figcaption className="border-t border-black/15 px-4 py-3 text-xs italic text-black/55 sm:px-6">Featured image for {post.title}</figcaption>
-        </figure>
-      ) : null}
+      <div className="pr-container grid gap-10 py-12 lg:grid-cols-[minmax(0,740px)_320px] lg:gap-16">
+        <article className="min-w-0">
+          {image ? <img src={image} alt="" className="mb-8 aspect-[16/9] w-full rounded-lg object-cover" /> : null}
 
-      <div className="mx-auto grid max-w-[1180px] gap-12 px-4 py-12 sm:px-6 lg:grid-cols-[minmax(0,760px)_300px] lg:px-8 lg:py-16">
-        <article className="min-w-0 border-t-4 border-black pt-8">
           <BodyContent post={post} />
+
+          <section className="mt-10 border-t border-[#d7d7d7] pt-8">
+            <h2 className="mb-6 text-3xl font-extrabold text-[#26313f]">Release Information</h2>
+            <div className="grid gap-5 text-base leading-8 text-[#18212b]">
+              <p>Company: {getField(post, ['company', 'organization', 'businessName']) || author}</p>
+              <p>Contact: {getField(post, ['contactPerson', 'contact', 'representative']) || 'Media Relations'}</p>
+              {getField(post, ['email']) ? <p>Email: {getField(post, ['email'])}</p> : null}
+              {getField(post, ['website', 'url']) ? <p>Website: <a href={getField(post, ['website', 'url'])}>{getField(post, ['website', 'url'])}</a></p> : null}
+            </div>
+            <p className="mt-8 text-base italic leading-8 text-[#18212b]">
+              This content is provided for informational purposes. Readers should verify details independently before taking action.
+            </p>
+          </section>
+
+          <div className="mt-8 bg-[#e8f2fb] px-5 py-6 text-base font-semibold leading-8 text-[#12366f] ring-1 ring-[#c9dff1]">
+            Disclaimer: Views and opinions expressed in this release belong to the source. The site presents submitted information in a public, readable format.
+          </div>
+
+          <nav className="mt-20 grid gap-8 sm:grid-cols-2">
+            <PostNavLink label="Previous Post" task={task} post={prev} align="left" />
+            <PostNavLink label="Next Post" task={task} post={next} align="right" />
+          </nav>
+
+          <div className="mt-16 border border-[#d9d9d9] p-5">
+            <div className="flex items-center gap-6">
+              <span className="flex h-[100px] w-[100px] shrink-0 items-center justify-center rounded-full bg-[#12366f] text-3xl font-extrabold text-white">{author.slice(0, 1).toUpperCase()}</span>
+              <div>
+                <p className="text-lg text-[#18212b]">{author}</p>
+                <Link href="/search" className="mt-7 inline-block text-sm text-black">View all posts by {author} &rarr;</Link>
+              </div>
+            </div>
+          </div>
+
+          {picks.length ? (
+            <section className="mt-12">
+              <h2 className="text-xl font-normal uppercase text-black">You Might Also Like</h2>
+              <div className="mt-10 grid gap-8 sm:grid-cols-3">
+                {picks.map((item) => (
+                  <Link key={item.id || item.slug} href={buildPostUrl(task, item.slug)} className="group">
+                    <h3 className="text-lg font-medium leading-tight text-black group-hover:text-[var(--slot4-accent-fill)]">{item.title}</h3>
+                    {item.publishedAt ? <p className="mt-4 text-sm text-[#8a969d]">{new Date(item.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p> : null}
+                  </Link>
+                ))}
+              </div>
+            </section>
+          ) : null}
+
           <EditableComments slug={post.slug} comments={comments} />
         </article>
-        <div className="border-t-4 border-[#c92f2f] pt-5">
-          <RelatedPanel task={task} post={post} related={related} />
-        </div>
+
+        <aside className="min-w-0 pt-4">
+          <form action="/search" className="border border-[#d7d7d7] p-5">
+            <label className="block text-xl font-extrabold text-[#26313f]">Search News</label>
+            <div className="mt-4 flex">
+              <input name="q" type="search" className="min-w-0 flex-1 border border-[#d9d9d9] px-3 py-3 outline-none" />
+              <button className="bg-[#d94a27] px-5 text-sm font-bold text-white">Search</button>
+            </div>
+          </form>
+
+          <div className="mt-8 border border-[#d7d7d7] p-5">
+            <h2 className="text-xl font-extrabold text-[#26313f]">Release Details</h2>
+            <div className="mt-5 grid gap-3 text-sm text-[#4b5563]">
+              <p><strong className="text-[#26313f]">Category:</strong> {category}</p>
+              {published ? <p><strong className="text-[#26313f]">Published:</strong> {published}</p> : null}
+              <p><strong className="text-[#26313f]">Source:</strong> {author}</p>
+            </div>
+          </div>
+
+          <SidebarSimpleList title="Recent Posts" posts={sidebarPosts.slice(0, 5)} task={task} large />
+          <div className="mt-16">
+            <h2 className="pr-section-title text-3xl">Browse News</h2>
+            <div className="mt-6 grid text-sm text-[#18212b]">
+              {categories.map((item) => <Link key={item} href={`/search?category=${normalizeLocalCategory(item)}`} className="hover:text-[var(--slot4-accent-fill)]">{item}</Link>)}
+            </div>
+          </div>
+          <SidebarSimpleList title="Latest Posts" posts={sidebarPosts.slice(0, 8)} task={task} dated />
+        </aside>
+      </div>
+    </section>
+  )
+}
+
+function normalizeLocalCategory(value: string) {
+  return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
+}
+
+function PostNavLink({ label, task, post, align }: { label: string; task: TaskKey; post?: SitePost; align: 'left' | 'right' }) {
+  if (!post) return <div />
+  return (
+    <Link href={buildPostUrl(task, post.slug)} className={align === 'right' ? 'text-left sm:text-right' : 'text-left'}>
+      <span className="text-sm font-bold uppercase text-[#b6bdc1]">{label}</span>
+      <h3 className="mt-2 text-lg font-bold leading-8 text-black hover:text-[var(--slot4-accent-fill)]">{post.title}</h3>
+    </Link>
+  )
+}
+
+function SidebarSimpleList({ title, posts, task, large = false, dated = false }: { title: string; posts: SitePost[]; task: TaskKey; large?: boolean; dated?: boolean }) {
+  if (!posts.length) return null
+  return (
+    <section className={large ? 'mt-16' : 'mt-16'}>
+      <h2 className={large ? 'wp-sidebar-title' : 'wp-widget-heading pb-2'}>{title}</h2>
+      <div className={large ? 'mt-9 grid gap-4' : 'mt-7 grid gap-7'}>
+        {posts.map((item) => (
+          <Link key={item.id || item.slug} href={buildPostUrl(task, item.slug)} className="group block">
+            <h3 className="text-lg font-normal leading-7 text-[#18212b] group-hover:text-[var(--slot4-accent-fill)]">{item.title}</h3>
+            {dated && item.publishedAt ? <p className="mt-3 text-sm text-[#8a969d]">{new Date(item.publishedAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p> : null}
+          </Link>
+        ))}
       </div>
     </section>
   )
@@ -338,7 +445,7 @@ function ProfileDetail({ post, related }: { post: SitePost; related: SitePost[] 
 }
 
 function BodyContent({ post, compact = false }: { post: SitePost; compact?: boolean }) {
-  return <div className={`article-content max-w-none ${compact ? 'text-base leading-8' : 'text-lg leading-9'}`} dangerouslySetInnerHTML={{ __html: formatPlainText(getBody(post)) }} />
+  return <div className={`article-content mt-8 max-w-none ${compact ? 'text-base leading-8' : ''}`} dangerouslySetInnerHTML={{ __html: formatPlainText(getBody(post)) }} />
 }
 
 function InfoGrid({ items }: { items: Array<[string, string, typeof MapPin]> }) {
